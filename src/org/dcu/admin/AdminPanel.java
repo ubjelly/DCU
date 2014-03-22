@@ -18,6 +18,11 @@ import javax.swing.border.EmptyBorder;
 
 import org.dcu.patch.Generator;
 import org.dcu.util.Language;
+import org.dcu.util.TimeStamp;
+
+import javax.swing.JTextArea;
+import javax.swing.JScrollPane;
+import java.awt.Color;
 
 public class AdminPanel extends JFrame {
 	
@@ -50,6 +55,8 @@ public class AdminPanel extends JFrame {
 	private JLabel remoteCacheLabel;
 	private JTextField remoteCacheField;
 	private JButton generateButton;
+	private JScrollPane consoleScrollPane;
+	private static JTextArea consoleArea;
 
 	/**
 	 * Create the frame.
@@ -57,7 +64,7 @@ public class AdminPanel extends JFrame {
 	public AdminPanel(String username) {
 		setResizable(false);
 		setTitle("DCU Admin Panel");
-		setBounds(100, 100, 450, 190);
+		setBounds(100, 100, 450, 290);
 		setLocationRelativeTo(null);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -67,6 +74,7 @@ public class AdminPanel extends JFrame {
 		addComponents();
 		addBounds();
 		addEvents();
+		initializeConsole();
 	}
 	
 	/**
@@ -86,6 +94,9 @@ public class AdminPanel extends JFrame {
 		remoteCacheField.setColumns(10);
 		browseButton = new JButton("Browse");
 		generateButton = new JButton("Generate Patch");
+		consoleScrollPane = new JScrollPane();
+		consoleArea = new JTextArea();
+		consoleArea.setBackground(Color.WHITE);
 		
 		contentPane.add(welcomeLabel);
 		contentPane.add(separator);
@@ -95,6 +106,8 @@ public class AdminPanel extends JFrame {
 		contentPane.add(remoteCacheLabel);
 		contentPane.add(remoteCacheField);
 		contentPane.add(generateButton);
+		contentPane.add(consoleScrollPane);
+		consoleScrollPane.setViewportView(consoleArea);
 	}
 	
 	/**
@@ -109,6 +122,7 @@ public class AdminPanel extends JFrame {
 		remoteCacheField.setBounds(145, 100, 289, 20);
 		browseButton.setBounds(354, 68, 80, 23);
 		generateButton.setBounds(303, 131, 131, 23);
+		consoleScrollPane.setBounds(10, 165, 424, 86);
 	}
 	
 	/**
@@ -137,7 +151,6 @@ public class AdminPanel extends JFrame {
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-				//TODO: Generate method
 			}
 		});
 	}
@@ -153,5 +166,21 @@ public class AdminPanel extends JFrame {
 	    	localCacheField.setText(chooser.getSelectedFile().getPath());
 	        localCache = chooser.getSelectedFile().getPath();
 	    }
+	    ConsoleMessage.info("Cache location selected: '" + localCache + "'.");
+	}
+	
+	/**
+	 * Initializes the console.
+	 */
+	private void initializeConsole() {
+		consoleArea.setText(TimeStamp.add() + "Admin panel accessed by " + username + "." + " Waiting for action...");
+	}
+	
+	/**
+	 * Gets the console.
+	 * @return The console.
+	 */
+	public static JTextArea getConsole() {
+		return consoleArea;
 	}
 }

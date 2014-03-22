@@ -10,4 +10,9 @@ public class Language {
 	 * The empty string.
 	 */
 	public static final String EMPTY_STRING = "";
+	
+	/**
+	 * Creates a line break.
+	 */
+	public static final String NEW_LINE = "\n";
 }
