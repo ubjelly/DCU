@@ -15,6 +15,9 @@ import org.dcu.util.TimeStamp;
  */
 public class ConsoleMessage {
 
+	//TODO: Seems that if you set one highlight color it won't change back.
+	
+	
 	/**
 	 * A green highlight color.
 	 */
@@ -49,6 +52,39 @@ public class ConsoleMessage {
 		int endingIndex = startingIndex + (timeStamp.length() + message.length());
 		try {
 			AdminPanel.getConsole().getHighlighter().addHighlight(startingIndex, endingIndex, greenPainter);
+		} catch (BadLocationException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Sends a red highlighted line of text to the console.
+	 * @param message The message to send.
+	 */
+	public static void error(String message) {
+		String timeStamp = TimeStamp.add();
+		AdminPanel.getConsole().append(Language.NEW_LINE + timeStamp + message);
+		int startingIndex = AdminPanel.getConsole().getText().indexOf(timeStamp + message);
+		int endingIndex = startingIndex + (timeStamp.length() + message.length());
+		try {
+			AdminPanel.getConsole().getHighlighter().addHighlight(startingIndex, endingIndex, redPainter);
+		} catch (BadLocationException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Sends a orange highlighted line of text to the console.
+	 * @param message The message to send.
+	 */
+	public static void warning(String message) {
+		String timeStamp = TimeStamp.add();
+		AdminPanel.getConsole().append(Language.NEW_LINE + timeStamp + message);
+		int startingIndex = AdminPanel.getConsole().getText().indexOf(timeStamp + message);
+		int endingIndex = startingIndex + (timeStamp.length() + message.length());
+		System.out.println(endingIndex - startingIndex);
+		try {
+			AdminPanel.getConsole().getHighlighter().addHighlight(startingIndex, endingIndex, orangePainter);
 		} catch (BadLocationException e) {
 			e.printStackTrace();
 		}

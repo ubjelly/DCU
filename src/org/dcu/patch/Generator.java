@@ -97,7 +97,7 @@ public class Generator {
             Gson gson = new Gson();
             Type listType = new TypeToken<List<Patch>>(){}.getType();
             if (file.exists()) {
-            	ConsoleMessage.info("We found an existing patch, overwriting it...");
+            	ConsoleMessage.warning("We found an existing patch, overwriting it...");
             	file.delete();
             }
             gson.toJson(patchContents, writer);
