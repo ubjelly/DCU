@@ -3,6 +3,7 @@ package org.dcu.admin;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -15,9 +16,15 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
+import org.dcu.patch.Generator;
 import org.dcu.util.Language;
 
 public class AdminPanel extends JFrame {
+	
+	/**
+	 * A patch generator to use.
+	 */
+	Generator generator;
 	
 	/**
 	 * The username that logged in.
@@ -124,6 +131,12 @@ public class AdminPanel extends JFrame {
 				}
 				
 				remoteCache = remoteCacheField.getText();
+				generator = new Generator(localCache);
+				try {
+					generator.createPatch();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 				//TODO: Generate method
 			}
 		});
