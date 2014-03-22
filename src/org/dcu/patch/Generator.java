@@ -101,8 +101,7 @@ public class Generator {
             	file.delete();
             }
             gson.toJson(patchContents, writer);
-            ConsoleMessage.info("Process complete!");
-            //ConsoleMessage.success("Process complete!");
+            ConsoleMessage.success("Process complete!");
             System.out.println(gson.toJson(patchContents, listType));
         }
 	}

@@ -42,11 +42,13 @@ public class ConsoleMessage {
 	 * Sends a green highlighted line of text to the console.
 	 * @param message The message to send.
 	 */
-	public static void success(String message) { //This method doesn't work
+	public static void success(String message) {
 		AdminPanel.getConsole().append(Language.NEW_LINE + TimeStamp.add() + message);
+		String timeStamp = TimeStamp.add();
+		int startingIndex = AdminPanel.getConsole().getText().indexOf(timeStamp + message);
+		int endingIndex = startingIndex + (timeStamp.length() + message.length());
 		try {
-			AdminPanel.getConsole().getHighlighter().addHighlight(message.indexOf(AdminPanel.getConsole().getText()), 
-					message.lastIndexOf(AdminPanel.getConsole().getText()), greenPainter);
+			AdminPanel.getConsole().getHighlighter().addHighlight(startingIndex, endingIndex, greenPainter);
 		} catch (BadLocationException e) {
 			e.printStackTrace();
 		}
