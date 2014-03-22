@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -22,6 +23,16 @@ public class AdminPanel extends JFrame {
 	 * The username that logged in.
 	 */
 	private String username;
+	
+	/**
+	 * The local location of the user's cache.
+	 */
+	private String localCache = "";
+	
+	/**
+	 * The remove location of the user's cache.
+	 */
+	private String remoteCache = "";
 	
 	private JPanel contentPane;
 	private JLabel welcomeLabel;
@@ -62,6 +73,7 @@ public class AdminPanel extends JFrame {
 		localCacheLabel = new JLabel("Local cache location:");
 		remoteCacheLabel = new JLabel("Remote cache location:");
 		localCacheField = new JTextField();
+		localCacheField.setEditable(false);
 		localCacheField.setColumns(10);
 		remoteCacheField = new JTextField();
 		remoteCacheField.setColumns(10);
@@ -96,6 +108,14 @@ public class AdminPanel extends JFrame {
 	 * Adds the component events.
 	 */
 	private void addEvents() {
+		//Browse
+		browseButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				selectCacheLocation();
+			}
+		});
+		
+		//Generate
 		generateButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if (localCacheField.getText().equals(Language.EMPTY_STRING) || remoteCacheField.getText().equals(Language.EMPTY_STRING)) {
@@ -103,8 +123,22 @@ public class AdminPanel extends JFrame {
 					return;
 				}
 				
+				remoteCache = remoteCacheField.getText();
 				//TODO: Generate method
 			}
 		});
+	}
+	
+	/**
+	 * Folder browser dialog for users to select their cache location.
+	 */
+	private void selectCacheLocation() {
+		JFileChooser chooser = new JFileChooser();
+		chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+	    int returnVal = chooser.showOpenDialog(this);
+	    if(returnVal == JFileChooser.APPROVE_OPTION) {
+	    	localCacheField.setText(chooser.getSelectedFile().getPath());
+	        localCache = chooser.getSelectedFile().getPath();
+	    }
 	}
 }
