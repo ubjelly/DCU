@@ -112,11 +112,17 @@ public class LoginRequest implements LoginListener {
 	public void onComplete(String jsonResponse) {
 		System.out.println(jsonResponse);
 		Gson gson = new Gson();
-		LoginResponse login = gson.fromJson(jsonResponse, LoginResponse.class);
+		LoginListener login = gson.fromJson(jsonResponse, LoginListener.class);
 		if(login.success()) {
 			parent.dispose();
 		} else {
 			
 		}
+	}
+
+	@Override
+	public boolean success() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }

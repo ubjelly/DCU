@@ -7,6 +7,8 @@ package org.dcu.admin.net;
 public interface LoginListener {
 	
 	public void onComplete(String jsonResponse);
+
+	public boolean success();
 	
 	
 }
