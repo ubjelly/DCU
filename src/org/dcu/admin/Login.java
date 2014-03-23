@@ -1,82 +1,62 @@
 package org.dcu.admin;
 
-import java.awt.Font;
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+import javax.swing.JTextField;
+import javax.swing.JTextArea;
 import javax.swing.JLabel;
 import javax.swing.JPasswordField;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
+
+import org.dcu.admin.net.LoginRequest;
 
 public class Login extends JDialog {
-	
-	/**
-	 * Dunno what this is for, just removes warning lol.
-	 */
-	private static final long serialVersionUID = 1L;
-	
-	private JLabel infoLabel;
 	private JTextField usernameField;
 	private JPasswordField passwordField;
-	private JButton loginButton;
 
 	/**
 	 * Create the dialog.
 	 */
 	public Login() {
-		setTitle("Admin Area");
-		setModal(true);
-		setBounds(100, 100, 407, 139);
-		setLocationRelativeTo(null);
+		setTitle("Admin Login");
+		setBounds(100, 100, 450, 134);
 		getContentPane().setLayout(null);
-		addComponents();
-		addBounds();
-		addEvents();
-	}
-	
-	/**
-	 * Initializes the components and adds them to the application.
-	 */
-	private void addComponents() {
-		infoLabel = new JLabel("If you are not the owner of this server, please disregard this area.");
-		infoLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		infoLabel.setFont(new Font("Arial", Font.PLAIN, 12));
-		usernameField = new JTextField();
-		usernameField.setColumns(10);
-		usernameField.setText("Username");
-		passwordField = new JPasswordField();
-		passwordField.setColumns(10);
-		passwordField.setText("Password");
-		loginButton = new JButton("Login");
 		
-		getContentPane().add(infoLabel);
+		usernameField = new JTextField();
+		usernameField.setBounds(10, 54, 147, 20);
 		getContentPane().add(usernameField);
-		getContentPane().add(passwordField);
+		usernameField.setColumns(10);
+		usernameField.requestFocus();
+		
+		JButton loginButton = new JButton("Login");
+		loginButton.setBounds(324, 53, 100, 23);
 		getContentPane().add(loginButton);
-	}
+		
+		JLabel lblPleaseEnterYour = new JLabel("Please enter your administrator username and password below");
+		lblPleaseEnterYour.setBounds(10, 11, 414, 14);
+		getContentPane().add(lblPleaseEnterYour);
+		
+		passwordField = new JPasswordField();
+		passwordField.setBounds(167, 54, 147, 20);
+		getContentPane().add(passwordField);
 	
-	/**
-	 * Sets the location of the components.
-	 */
-	private void addBounds() {
-		infoLabel.setBounds(10, 11, 371, 42);
-		usernameField.setBounds(10, 64, 141, 20);
-		passwordField.setBounds(161, 64, 141, 20);
-		loginButton.setBounds(312, 63, 69, 23);
-	}
-	
-	/**
-	 * Adds the component events.
-	 */
-	private void addEvents() {
+		
 		loginButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				setVisible(false);
-				AdminPanel ap = new AdminPanel("Stephen"); //TODO: Fix text boxes
-				ap.setVisible(true);
+				String username = usernameField.getText();
+				String password = new String(passwordField.getPassword());
+				
+				new LoginRequest(Login.this, username, password).login();
+				
+				//setVisible(false);
+				//AdminPanel ap = new AdminPanel("Stephen"); //TODO: Fix text boxes
+				//ap.setVisible(true);
 			}
 		});
 	}
