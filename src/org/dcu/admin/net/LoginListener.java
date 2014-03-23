@@ -1,14 +1,11 @@
 package org.dcu.admin.net;
 
 /**
- * JSON serialization for a login request.
- * @author Stephen Andrews
+ * Interface for http callback.
+ * @author Brendan Dodd
  */
 public interface LoginListener {
 	
 	public void onComplete(String jsonResponse);
-
-	public boolean success();
-	
 	
 }

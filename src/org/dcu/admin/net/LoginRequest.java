@@ -36,6 +36,12 @@ public class LoginRequest implements LoginListener {
 	private String username;
 	private String password;
 	
+	/**
+	 * Constructs a login request.
+	 * @param parent The parent of the form.
+	 * @param username The username.
+	 * @param password The password.
+	 */
 	public LoginRequest(JDialog parent, String username, String password) {
 		this.username = username;
 		this.password = password;
@@ -75,54 +81,16 @@ public class LoginRequest implements LoginListener {
 			}
 		}).start();
 	}
-	
-	/**
-	 * Determines whether the request was successful or not.
-	 * @param url The url to check.
-	 * @return true If the login was successful.
-	 */
-	private static boolean isSuccessful(URL url) {
-		try {
-			InputStream is = url.openStream();
-			String input = null;
-			try {
-				BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-				input = reader.readLine();
-			} finally {
-				if(input != null) {
-					JsonElement jElement = new JsonParser().parse(input);
-				    JsonObject successObject = jElement.getAsJsonObject();
-				    JsonObject messageObject = jElement.getAsJsonObject();
-				    successObject = successObject.getAsJsonObject("success");
-				    messageObject = messageObject.getAsJsonObject("message");
-				    System.out.println(successObject + "    " + messageObject);
-				}
-				is.close();
-			}
-			
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return false;
-	}
 
 	@Override
 	public void onComplete(String jsonResponse) {
 		System.out.println(jsonResponse);
 		Gson gson = new Gson();
-		LoginListener login = gson.fromJson(jsonResponse, LoginListener.class);
-		if(login.success()) {
+		LoginResponse login = gson.fromJson(jsonResponse, LoginResponse.class);
+		if(login.isSuccess()) {
 			parent.dispose();
 		} else {
 			
 		}
-	}
-
-	@Override
-	public boolean success() {
-		// TODO Auto-generated method stub
-		return false;
 	}
 }
