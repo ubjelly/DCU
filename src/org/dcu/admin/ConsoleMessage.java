@@ -1,10 +1,13 @@
 package org.dcu.admin;
 
 import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Shape;
 
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultHighlighter;
 import javax.swing.text.Highlighter;
+import javax.swing.text.JTextComponent;
 
 import org.dcu.util.Language;
 import org.dcu.util.TimeStamp;
@@ -16,7 +19,6 @@ import org.dcu.util.TimeStamp;
 public class ConsoleMessage {
 
 	//TODO: Seems that if you set one highlight color it won't change back.
-	
 	
 	/**
 	 * A green highlight color.
@@ -50,6 +52,7 @@ public class ConsoleMessage {
 		String timeStamp = TimeStamp.add();
 		int startingIndex = AdminPanel.getConsole().getText().indexOf(timeStamp + message);
 		int endingIndex = startingIndex + (timeStamp.length() + message.length());
+		System.out.println("Starting: " + startingIndex + " Ending: " + endingIndex);
 		try {
 			AdminPanel.getConsole().getHighlighter().addHighlight(startingIndex, endingIndex, greenPainter);
 		} catch (BadLocationException e) {
@@ -68,6 +71,7 @@ public class ConsoleMessage {
 		int endingIndex = startingIndex + (timeStamp.length() + message.length());
 		try {
 			AdminPanel.getConsole().getHighlighter().addHighlight(startingIndex, endingIndex, redPainter);
+			AdminPanel.getConsole().repaint();
 		} catch (BadLocationException e) {
 			e.printStackTrace();
 		}
@@ -82,7 +86,7 @@ public class ConsoleMessage {
 		AdminPanel.getConsole().append(Language.NEW_LINE + timeStamp + message);
 		int startingIndex = AdminPanel.getConsole().getText().indexOf(timeStamp + message);
 		int endingIndex = startingIndex + (timeStamp.length() + message.length());
-		System.out.println(endingIndex - startingIndex);
+		System.out.println("Starting: " + startingIndex + " Ending: " + endingIndex);
 		try {
 			AdminPanel.getConsole().getHighlighter().addHighlight(startingIndex, endingIndex, orangePainter);
 		} catch (BadLocationException e) {
