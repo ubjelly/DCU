@@ -1,18 +1,13 @@
 package org.dcu.admin;
 
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.JTextField;
-import javax.swing.JTextArea;
 import javax.swing.JLabel;
 import javax.swing.JPasswordField;
+import javax.swing.JTextField;
 
 import org.dcu.admin.net.LoginRequest;
 
@@ -53,10 +48,6 @@ public class Login extends JDialog {
 				String password = new String(passwordField.getPassword());
 				
 				new LoginRequest(Login.this, username, password).login();
-				
-				//setVisible(false);
-				//AdminPanel ap = new AdminPanel("Stephen"); //TODO: Fix text boxes
-				//ap.setVisible(true);
 			}
 		});
 	}

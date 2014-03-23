@@ -1,12 +1,7 @@
 package org.dcu.admin.net;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,9 +17,6 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 
 /**
  * Handles the login communication between the application and site.
@@ -89,8 +81,6 @@ public class LoginRequest implements LoginListener {
 		LoginResponse login = gson.fromJson(jsonResponse, LoginResponse.class);
 		if(login.isSuccess()) {
 			parent.dispose();
-		} else {
-			
 		}
 	}
 }
