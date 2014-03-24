@@ -19,7 +19,8 @@ import javax.swing.JProgressBar;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
-import org.dcu.admin.Login;
+import org.dcu.admin.AdminLogin;
+import org.dcu.admin.AdminLogin;
 
 public class Application extends JFrame {
 
@@ -34,10 +35,12 @@ public class Application extends JFrame {
 	private JMenuItem aboutMenuItem;
 	private JMenuItem exitMenuItem;
 	private JMenu adminMenu;
+	private JMenuItem openPanelMenuItem;
 	private JProgressBar progressBar;
 	private JLabel infoLabel;
 	private JButton playButton;
 	private JLabel statusLabel;
+	private JMenuItem infoMenuItem;
 
 	/**
 	 * Launch the application.
@@ -82,6 +85,8 @@ public class Application extends JFrame {
 		aboutMenuItem = new JMenuItem("About");
 		exitMenuItem = new JMenuItem("Exit");
 		adminMenu = new JMenu("Admin");
+		openPanelMenuItem = new JMenuItem("Admin Panel");
+		infoMenuItem = new JMenuItem("Updater Information");
 		progressBar = new JProgressBar();
 		infoLabel = new JLabel("Sit tight while we check for updates...");
 		infoLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -95,6 +100,8 @@ public class Application extends JFrame {
 		fileMenu.add(aboutMenuItem);
 		fileMenu.add(exitMenuItem);
 		menuBar.add(adminMenu);
+		adminMenu.add(openPanelMenuItem);
+		adminMenu.add(infoMenuItem);
 		contentPane.add(progressBar);
 		contentPane.add(infoLabel);
 		contentPane.add(playButton);
@@ -124,11 +131,18 @@ public class Application extends JFrame {
 		});
 		
 		//Admin
-		adminMenu.addMouseListener(new MouseAdapter() {
+		openPanelMenuItem.addActionListener(new ActionListener() {
 			@Override
-			public void mousePressed(MouseEvent arg0) {
-				Login adminLogin = new Login();
-				adminLogin.setVisible(true);
+			public void actionPerformed(ActionEvent arg0) {
+				AdminLogin login = new AdminLogin();
+				login.setVisible(true);
+			}
+		});
+		
+		//Info
+		infoMenuItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				JOptionPane.showMessageDialog(null, "TODO: Something cool here lel", "About", JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
 	}
