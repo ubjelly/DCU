@@ -4,8 +4,6 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -20,7 +18,7 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 import org.dcu.admin.AdminLogin;
-import org.dcu.admin.AdminLogin;
+import org.dcu.util.Language;
 
 public class Application extends JFrame {
 
@@ -28,6 +26,11 @@ public class Application extends JFrame {
 	 * Dunno what this is for, just removes warning lol.
 	 */
 	private static final long serialVersionUID = 1L;
+	
+	/**
+	 * The name of the server.
+	 */
+	private String serverName;
 	
 	private JPanel contentPane;
 	private JMenuBar menuBar;
@@ -44,12 +47,13 @@ public class Application extends JFrame {
 
 	/**
 	 * Launch the application.
+	 * TODO: Remove this when finished.
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Application frame = new Application();
+					Application frame = new Application("Derithium");
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -61,12 +65,13 @@ public class Application extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Application() {
+	public Application(String serverName) {
 		setResizable(false);
 		setTitle("Client Updater - Powered by Derithium");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 438, 210);
 		setLocationRelativeTo(null);
+		this.serverName = serverName;
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -142,7 +147,12 @@ public class Application extends JFrame {
 		//Info
 		infoMenuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				JOptionPane.showMessageDialog(null, "TODO: Something cool here lel", "About", JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Derithium Client Updater"
+													+ Language.NEW_LINE + "Build #: " + Language.BUILD
+													+ Language.NEW_LINE + "Configured for server: " + serverName
+													+ Language.NEW_LINE
+													+ Language.NEW_LINE + "Submit bugs to Stephen@derithium.com", 
+													"Client Info", JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
 	}

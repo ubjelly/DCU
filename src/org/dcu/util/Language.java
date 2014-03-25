@@ -15,4 +15,9 @@ public class Language {
 	 * Creates a line break.
 	 */
 	public static final String NEW_LINE = "\n";
+	
+	/**
+	 * The build information.
+	 */
+	public static final String BUILD = "0.1 Alpha";
 }

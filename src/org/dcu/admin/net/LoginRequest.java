@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -74,6 +75,10 @@ public class LoginRequest implements LoginListener {
 		}).start();
 	}
 
+	/**
+	 * The action taken after http callback.
+	 * @param jsonResponse The received JSON.
+	 */
 	@Override
 	public void onComplete(String jsonResponse) {
 		System.out.println(jsonResponse);
@@ -81,6 +86,8 @@ public class LoginRequest implements LoginListener {
 		LoginResponse login = gson.fromJson(jsonResponse, LoginResponse.class);
 		if(login.isSuccess()) {
 			parent.dispose();
+		} else {
+			JOptionPane.showMessageDialog(null, login.getMessage(), "Oops!", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 }
