@@ -13,15 +13,18 @@ import com.google.gson.JsonSyntaxException;
  */
 public class VersionChecker {
 	
+	/**
+	 * Version class to hold the data parsed with gson.
+	 */
 	Version version = new Version();
 	
 	/**
-	 * Downloads a ur as text.
+	 * Downloads a url as text.
 	 * @param url The url to download from.
 	 * @return The contents of the url.
 	 * @throws Exception
 	 */
-	private static String readUrl(String fromUrl) throws Exception {
+	private String readUrl(String fromUrl) throws Exception {
 		BufferedReader reader = null;
 		try {
 			URL url = new URL(fromUrl);
@@ -62,6 +65,10 @@ public class VersionChecker {
 		}).start();
 	}
 	
+	/**
+	 * Returns the version class instantiated within the class.
+	 * @return The version class.
+	 */
 	public Version getVersion() {
 		return version;
 	}

@@ -20,12 +20,11 @@ import javax.swing.border.EmptyBorder;
 import org.dcu.admin.AdminLogin;
 import org.dcu.util.Language;
 
+/**
+ * The main window of DCU.
+ * @author Stephen Andrews
+ */
 public class Application extends JFrame {
-
-	/**
-	 * Dunno what this is for, just removes warning lol.
-	 */
-	private static final long serialVersionUID = 1L;
 	
 	/**
 	 * The name of the server.
@@ -148,11 +147,11 @@ public class Application extends JFrame {
 		infoMenuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				JOptionPane.showMessageDialog(null, "Derithium Client Updater"
-													+ Language.NEW_LINE + "Build #: " + Language.BUILD
-													+ Language.NEW_LINE + "Configured for server: " + serverName
-													+ Language.NEW_LINE
-													+ Language.NEW_LINE + "Submit bugs to Stephen@derithium.com", 
-													"Client Info", JOptionPane.INFORMATION_MESSAGE);
+						+ Language.NEW_LINE + "Build #: " + Language.BUILD
+						+ Language.NEW_LINE + "Configured for server: " + serverName
+						+ Language.NEW_LINE
+						+ Language.NEW_LINE + "Submit bugs to Stephen@derithium.com", 
+						"Client Info", JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
 	}
