@@ -1,66 +1,68 @@
 package org.dcu.updater;
 
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.URL;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpUriRequest;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.util.EntityUtils;
-import org.dcu.admin.net.LoginRequest;
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 
 /**
  * Compares the local version of DCU with the remote one (most recent build).
  * @author Stephen Andrews
  */
 public class VersionChecker {
+	
+	Version version = new Version();
+	
+	/**
+	 * Downloads a ur as text.
+	 * @param url The url to download from.
+	 * @return The contents of the url.
+	 * @throws Exception
+	 */
+	private static String readUrl(String fromUrl) throws Exception {
+		BufferedReader reader = null;
+		try {
+			URL url = new URL(fromUrl);
+			reader = new BufferedReader(new InputStreamReader(url.openStream()));
+			StringBuffer sb = new StringBuffer();
+			int read;
+			char[] chars = new char[1024];
+			while ((read = reader.read(chars)) != -1) {
+				sb.append(chars, 0, read);
+				return sb.toString();
+			}
+		} finally {
+			if (reader != null) {
+				reader.close();
+			}
+				
+		}
+		return null;
+	}
 
 	/**
-	 * The buld number.
-	 */
-	private double build;
-	
-	/**
-	 * The information regarding the version.
-	 */
-	private String info;
-	
-	/**
-	 * Constructs a version checker.
-	 */
-	public VersionChecker() {
-		build = -1;
-		info = "";
-	}
-	
-	/**
-	 * Checks the latest version of DCU by referencing the site.
+	 * Checks the latest version of DCU by referencing a JSON file.
 	 */
 	public void checkLatestVersion() {
-		final HttpUriRequest uri = new HttpUriRequest("http://www.derithium.com/dcu/version.json");
+		final String url = "http://www.derithium.com/dcu/version.json";
+		final Gson gson = new Gson();
 		new Thread(new Runnable() {
-
 			@Override
 			public void run() {
 				try {
-					HttpClient client = HttpClientBuilder.create().build();
-					HttpResponse response = client.execute(url);
-
-					
-				} catch (UnsupportedEncodingException e) {
+					gson.fromJson(readUrl(url), version.getClass());
+				} catch (JsonSyntaxException e) {
 					e.printStackTrace();
-				} catch (IOException e) {
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
-			
 		}).start();
+	}
+	
+	public Version getVersion() {
+		return version;
 	}
 }
