@@ -16,6 +16,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
+import org.dcu.admin.AdminPanel;
 
 import com.google.gson.Gson;
 
@@ -36,6 +37,7 @@ public class LoginRequest implements LoginListener {
 	 * @param password The password.
 	 */
 	public LoginRequest(JDialog parent, String username, String password) {
+		this.parent = parent;
 		this.username = username;
 		this.password = password;
 	}
@@ -54,8 +56,6 @@ public class LoginRequest implements LoginListener {
 				try {
 					HttpClient client = HttpClientBuilder.create().build();
 					HttpPost post = new HttpPost(url);
-				 
-					post.setHeader("Content-Type", "text/html");
 				 
 					List<NameValuePair> urlParameters = new ArrayList<NameValuePair>();
 					urlParameters.add(new BasicNameValuePair("username", username));
@@ -86,6 +86,8 @@ public class LoginRequest implements LoginListener {
 		LoginResponse login = gson.fromJson(jsonResponse, LoginResponse.class);
 		if(login.isSuccess()) {
 			parent.dispose();
+			AdminPanel adminPanel = new AdminPanel(username);
+			adminPanel.setVisible(true);
 		} else {
 			JOptionPane.showMessageDialog(null, login.getMessage(), "Oops!", JOptionPane.ERROR_MESSAGE);
 		}

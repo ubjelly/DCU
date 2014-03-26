@@ -63,10 +63,10 @@ public class AdminLogin extends JDialog {
 		infoLabel.setFont(new Font("Arial", Font.PLAIN, 12));
 		usernameField = new JTextField();
 		usernameField.setColumns(10);
-		usernameField.setText("Username");
+		usernameField.setText("admin");
 		passwordField = new JPasswordField();
 		passwordField.setColumns(10);
-		passwordField.setText("Password");
+		passwordField.setText("test");
 		loginButton = new JButton("Login");
 		
 		getContentPane().add(infoLabel);
@@ -91,7 +91,6 @@ public class AdminLogin extends JDialog {
 	private void addEvents() {
 		loginButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				setVisible(false);
 				String username = usernameField.getText();
 				String password = new String(passwordField.getPassword());
 				
