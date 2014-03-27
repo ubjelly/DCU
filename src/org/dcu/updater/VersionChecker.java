@@ -1,6 +1,9 @@
 package org.dcu.updater;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.InputStreamReader;
 import java.net.URL;
 
@@ -14,9 +17,22 @@ import com.google.gson.JsonSyntaxException;
 public class VersionChecker {
 	
 	/**
-	 * Version class to hold the data parsed with gson.
+	 * The information pertaining to the remote version.
 	 */
-	Version version = new Version();
+	Version remoteVersion;
+	
+	/**
+	 * The information pertaining to the local version.
+	 */
+	Version localVersion;
+	
+	/**
+	 * Construct a version checker.
+	 */
+	public VersionChecker() {
+		remoteVersion = null;
+		localVersion = null;
+	}
 	
 	/**
 	 * Downloads a url as text.
@@ -46,16 +62,18 @@ public class VersionChecker {
 	}
 
 	/**
-	 * Checks the latest version of DCU by referencing a JSON file.
+	 * Loads the latest version of DCU by referencing a remote JSON file.
 	 */
-	public void checkLatestVersion() {
+	public void loadRemoteVersion() {
 		final String url = "http://www.derithium.com/dcu/version.json";
 		final Gson gson = new Gson();
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
 				try {
-					gson.fromJson(readUrl(url), version.getClass());
+					remoteVersion = gson.fromJson(readUrl(url), Version.class);
+					System.out.println("Loaded remote version - Version: " + remoteVersion.getBuild()
+							+ " Info: " + remoteVersion.getInfo());
 				} catch (JsonSyntaxException e) {
 					e.printStackTrace();
 				} catch (Exception e) {
@@ -66,10 +84,43 @@ public class VersionChecker {
 	}
 	
 	/**
-	 * Returns the version class instantiated within the class.
-	 * @return The version class.
+	 * Loads the local version of DCU.
 	 */
-	public Version getVersion() {
-		return version;
+	public void loadLocalVersion() {
+		final Gson gson = new Gson();
+		new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				String path = System.getProperty("user.dir") + "/config/version.json";
+				File file = new File(path);
+				BufferedReader reader;
+				try {
+					reader = new BufferedReader(new FileReader(file));
+					localVersion = gson.fromJson(reader, Version.class);
+					System.out.println("Loaded local version - Version: " + localVersion.getBuild()
+							+ " Info: " + localVersion.getInfo());
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				}
+			}
+			
+		}).start();
+	}
+	
+	/**
+	 * Gets the remote version.
+	 * @return The remote version.
+	 */
+	public Version getRemoteVersion() {
+		return remoteVersion;
+	}
+	
+	/**
+	 * Gets the local version.
+	 * @return The local version.
+	 */
+	public Version getLocalVersion() {
+		return localVersion;
 	}
 }

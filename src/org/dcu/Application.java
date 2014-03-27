@@ -18,6 +18,7 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 import org.dcu.admin.AdminLogin;
+import org.dcu.updater.VersionChecker;
 import org.dcu.util.Language;
 
 /**
@@ -78,6 +79,7 @@ public class Application extends JFrame {
 		addComponents();
 		addBounds();
 		addEvents();
+		checkVersion();
 	}
 	
 	/**
@@ -154,5 +156,22 @@ public class Application extends JFrame {
 						"Client Info", JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
+	}
+	
+	/**
+	 * Checks to see if DCU is up to date.
+	 */
+	private void checkVersion() {
+		VersionChecker vc = new VersionChecker();
+		vc.loadLocalVersion();
+		vc.loadRemoteVersion();
+		
+		while (vc.getLocalVersion() == null || vc.getRemoteVersion() == null) {
+			System.out.println("GOING BACK");
+		}
+		
+		if (vc.getLocalVersion().getBuild() < vc.getRemoteVersion().getBuild()) {
+			System.out.println("Y U RUNNIN OLD VERSION LOL!");
+		}
 	}
 }
