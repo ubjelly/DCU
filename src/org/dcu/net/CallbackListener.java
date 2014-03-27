@@ -1,10 +1,10 @@
-package org.dcu.admin.net;
+package org.dcu.net;
 
 /**
  * Interface for http callback.
  * @author Brendan Dodd
  */
-public interface LoginListener {
+public interface CallbackListener {
 	
 	public void onComplete(String jsonResponse);
 	

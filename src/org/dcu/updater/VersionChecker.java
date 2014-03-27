@@ -7,6 +7,8 @@ import java.io.FileReader;
 import java.io.InputStreamReader;
 import java.net.URL;
 
+import org.dcu.net.CallbackListener;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
@@ -14,7 +16,7 @@ import com.google.gson.JsonSyntaxException;
  * Compares the local version of DCU with the remote one (most recent build).
  * @author Stephen Andrews
  */
-public class VersionChecker {
+public class VersionChecker implements CallbackListener {
 	
 	/**
 	 * The information pertaining to the remote version.
@@ -66,21 +68,14 @@ public class VersionChecker {
 	 */
 	public void loadRemoteVersion() {
 		final String url = "http://www.derithium.com/dcu/version.json";
-		final Gson gson = new Gson();
-		new Thread(new Runnable() {
-			@Override
-			public void run() {
 				try {
-					remoteVersion = gson.fromJson(readUrl(url), Version.class);
-					System.out.println("Loaded remote version - Version: " + remoteVersion.getBuild()
-							+ " Info: " + remoteVersion.getInfo());
+					String jsonResponse = readUrl(url);
+					VersionChecker.this.onComplete(jsonResponse);
 				} catch (JsonSyntaxException e) {
 					e.printStackTrace();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-			}
-		}).start();
 	}
 	
 	/**
@@ -122,5 +117,15 @@ public class VersionChecker {
 	 */
 	public Version getLocalVersion() {
 		return localVersion;
+	}
+
+	/**
+	 * The action taken after http callback.
+	 * @param jsonResponse The received JSON.
+	 */
+	@Override
+	public void onComplete(String jsonResponse) {
+		Gson gson = new Gson();
+		remoteVersion = gson.fromJson(jsonResponse, Version.class);
 	}
 }
