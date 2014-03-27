@@ -1,9 +1,11 @@
 package org.dcu;
 
+import java.awt.Desktop;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.URL;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -18,25 +20,32 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 import org.dcu.admin.AdminLogin;
-import org.dcu.updater.VersionChecker;
+import org.dcu.updater.UpdateListener;
+import org.dcu.updater.VersionControl;
 import org.dcu.util.Language;
 
 /**
  * The main window of DCU.
  * @author Stephen Andrews
  */
-public class Application extends JFrame {
+public class Application extends JFrame implements UpdateListener {
 	
 	/**
-	 * A version checker to be used throughout the class.
+	 * Application Version
+	**/
+	public static final String VERSION = "0.1";
+	
+	
+	/**
+	 * Download page for DCU
 	 */
-	VersionChecker vc;
-
+	private static final String DOWNLOAD_PAGE = "http://www.derithium.com/dcu/dcu.jar";
+	
 	/**
 	 * The name of the server.
 	 */
 	private String serverName;
-	
+	private VersionControl vc;
 	private JPanel contentPane;
 	private JMenuBar menuBar;
 	private JMenu fileMenu;
@@ -77,7 +86,6 @@ public class Application extends JFrame {
 		setBounds(100, 100, 438, 210);
 		setLocationRelativeTo(null);
 		this.serverName = serverName;
-		vc = new VersionChecker();
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -85,7 +93,9 @@ public class Application extends JFrame {
 		addComponents();
 		addBounds();
 		addEvents();
-		checkVersion();
+		
+		
+		checkForUpdates();
 	}
 	
 	/**
@@ -155,7 +165,7 @@ public class Application extends JFrame {
 		infoMenuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				JOptionPane.showMessageDialog(null, "Derithium Client Updater"
-						+ Language.NEW_LINE + "Build #: " + vc.getLocalVersion().getBuild()
+						//+ Language.NEW_LINE + "Build #: " + vc.getLocalVersion().getBuild()
 						+ Language.NEW_LINE + "Configured for server: " + serverName
 						+ Language.NEW_LINE
 						+ Language.NEW_LINE + "Submit bugs to Stephen@derithium.com", 
@@ -167,17 +177,34 @@ public class Application extends JFrame {
 	/**
 	 * Checks to see if DCU is up to date.
 	 */
-	private void checkVersion() {
-		vc.loadLocalVersion();
-		vc.loadRemoteVersion();
+	private void checkForUpdates() {
+		vc = new VersionControl(this);
+		vc.checkForUpdates();
+	}
 	
-		if (vc.getLocalVersion().getBuild() < vc.getRemoteVersion().getBuild()) {
-			JOptionPane.showMessageDialog(null, "This version of DCU is out of date! "
-					+ "The following updates have been performed:"
-					+ Language.NEW_LINE + vc.getRemoteVersion().getInfo()
-					+ Language.NEW_LINE
-					+ Language.NEW_LINE + "To download, please visit - http://www.derithium.com/dcu/dcu.jar.",
-					"Oh no!", JOptionPane.INFORMATION_MESSAGE);
+	public static float getVersion() {
+		return Float.parseFloat(VERSION);
+	}
+
+	@Override
+	public void updateRequired(boolean updateRequired) {
+		if(updateRequired) {
+			int response = JOptionPane.showOptionDialog(this, "A new version of DCU has been released!"
+					+ Language.NEW_LINE + "Release Notes:"
+					+ Language.NEW_LINE + vc.getLatestVersion().getReleaseNotes()
+					+ Language.NEW_LINE 
+					+ Language.NEW_LINE + "Would you like to be taken to the download page?",
+					"A new version is available!", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, 
+					null, null, null);
+			
+			if(response == JOptionPane.YES_OPTION) {
+			    try {
+			        Desktop.getDesktop().browse(new URL(DOWNLOAD_PAGE).toURI());
+			    } catch (Exception e) {
+			        e.printStackTrace();
+			    }
+			}
 		}
 	}
+
 }

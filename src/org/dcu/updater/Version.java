@@ -9,26 +9,26 @@ public class Version {
 	/**
 	 * The build number.
 	 */
-	private double build;
+	private String build;
 	
 	/**
 	 * The information regarding the version.
 	 */
-	private String info;
+	private String notes;
 	
 	/**
 	 * Gets the build number.
-	 * @return The build number.
+	 * @return float - The build number.
 	 */
-	public double getBuild() {
-		return build;
+	public float getBuild() {
+		return Float.parseFloat(build);
 	}
 	
 	/**
-	 * Gets the version's information.
-	 * @return The version's information.
+	 * Gets the version's release notes.
+	 * @return The version's release notes.
 	 */
-	public String getInfo() {
-		return info;
+	public String getReleaseNotes() {
+		return notes;
 	}
 }
