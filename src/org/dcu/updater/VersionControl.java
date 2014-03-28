@@ -18,7 +18,7 @@ import com.google.gson.JsonSyntaxException;
 
 /**
  * Compares the local version of DCU with the remote one (most recent build).
- * @author Stephen Andrews
+ * @author Stephen Andrews, Brendan Dodd
  */
 public class VersionControl {
 	

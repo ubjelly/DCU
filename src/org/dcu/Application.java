@@ -33,7 +33,7 @@ public class Application extends JFrame implements UpdateListener {
 	/**
 	 * Application Version
 	**/
-	public static final String VERSION = "0.1";
+	public static final String VERSION = "0.2";
 	
 	
 	/**
@@ -45,7 +45,12 @@ public class Application extends JFrame implements UpdateListener {
 	 * The name of the server.
 	 */
 	private String serverName;
+	
+	/**
+	 * A version controller.
+	 */
 	private VersionControl vc;
+	
 	private JPanel contentPane;
 	private JMenuBar menuBar;
 	private JMenu fileMenu;
