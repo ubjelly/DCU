@@ -5,13 +5,10 @@ import java.io.UnsupportedEncodingException;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 import org.dcu.Application;
-import org.dcu.admin.net.LoginRequest;
-import org.dcu.net.CallbackListener;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
@@ -29,17 +26,29 @@ public class VersionControl {
 	 */
 	private Version latestVersion;
 	
+	/**
+	 * An update listener object.
+	 */
 	private UpdateListener listener;
 	
+	/**
+	 * Constructs a version control object.
+	 * @param listener The listen for the object.
+	 */
 	public VersionControl(UpdateListener listener) {
 		this.listener = listener;
 	}
 	
+	/**
+	 * Checks to see if there are any updates.
+	 */
 	public void checkForUpdates() {	
 		fetchRemoteVersion();
 	}
 	
-	
+	/**
+	 * Fetches the remote version of DCU from a remote PHP file.
+	 */
 	public void fetchRemoteVersion() {
 		try {
 			new Thread(new Runnable() {
@@ -73,6 +82,10 @@ public class VersionControl {
 		}
 	}
 	
+	/**
+	 * Gets the latest version of DCU.
+	 * @return The latest version.
+	 */
 	public Version getLatestVersion() {
 		return latestVersion;
 	}
